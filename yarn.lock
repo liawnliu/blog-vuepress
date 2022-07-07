@@ -8215,11 +8215,12 @@ vuepress-plugin-smooth-scroll@^0.0.3:
   dependencies:
     smoothscroll-polyfill "^0.4.3"
 
-vuepress-theme-liawn@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/vuepress-theme-liawn/-/vuepress-theme-liawn-1.0.0.tgz#9140b0ed81000653d27cd52f782384355fd0ea69"
-  integrity sha512-prmjXa9U+WqCt4MdY0+slA4hvf+G4GWf2l27gN7gNdPeyIt7m0HnYm19oURjY80Em18Wr1PKsZhK1SxtnrrAsg==
+vuepress-theme-liawn@1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/vuepress-theme-liawn/-/vuepress-theme-liawn-1.0.1.tgz#96be82b8c954132d0bd953eba5189b5ad1f2c9a5"
+  integrity sha512-ZsJziscmkCBmHlO/ANtMmF/ULHLFgyWvDsPOQqLcY73i7v6Q3DE/ARNeRSMlZO1mOn3WaUVF75Vv7LCt7rPa+Q==
   dependencies:
+    "@vuepress/theme-default" "1.9.7"
     lodash.debounce "^4.0.8"
 
 vuepress@^1.9.7:
