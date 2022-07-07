@@ -3,6 +3,7 @@ const sidebar = require('./sidebar.js');
 module.exports = {
     title: 'Liawn\'s blog',
     description: '用vuepress搭建的个人博客',
+    base: '/blog-vuepress/',
     port: 4002,
     head: [
         ['meta', {charset: 'UTF-8'}],
@@ -26,7 +27,7 @@ module.exports = {
     theme: 'vuepress-theme-liawn',
     themeConfig: {
         sidebarDepth: 0, // 0表示让左侧侧边栏禁止提取文章里的标题
-        lastUpdated: '上一次更新', // 文档更新时间：每个文件git最后提交的时间
+        lastUpdated: true, // 文档更新时间：每个文件git最后提交的时间。关闭的话可以节约打包时间
         displayAllHeaders: false, // 默认情况下，侧边栏只会显示由当前活动页面的标题（headers）组成的链接
         activeHeaderLinks: false, // 当用户通过滚动查看页面的不同部分时，嵌套的标题链接和 URL 中的 Hash 值会实时更新
         smoothScroll: true, // 启用滚动效果
