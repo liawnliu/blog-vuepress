@@ -116,6 +116,7 @@ module.exports = {
             '/book-web/常用工具/webpack的使用',
             '/book-web/常用工具/VSCode的使用',
             '/book-web/常用工具/Chrome的使用',
+            '/book-web/常用工具/使用vuepress写blog',
             '/book-web/常用工具/使用docsify写blog',
             '/book-web/常用工具/使用gitbook写blog',
             '/book-web/web前端测试与调试/基于mocha+chai的单元测试',

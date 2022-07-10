@@ -10,7 +10,7 @@
 ## JavaScript实现
 
 虽然JavaScript和ECMAScript通常被人们用来表达相同的含义，但JavaScript的含义却比ECMA-262中规定的要多得多，如下图。  
-![JavaScript](img\JavaScript.png)
+![JavaScript](./img/JavaScript.png)
 
 ### ECMAScript
 

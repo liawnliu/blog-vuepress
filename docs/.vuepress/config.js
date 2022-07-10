@@ -11,38 +11,50 @@ module.exports = {
     ],
     markdown: {
         lineNumbers: true, // 代码块显示行号
-        toc: { includeLevel: [2, 3, 4, 5] },
+        toc: { includeLevel: [2, 3, 4, 5, 6] },
+         // this.$page.headers里的标题层级
+        extractHeaders: [ 'h1', 'h2', 'h3', 'h4', 'h5', 'h6' ],
         // markdown-it插件，解决相对路径中文图片问题
         extendMarkdown: md => {
-            // yarn add markdown-it-disable-url-encode --dev
+            // yarn add markdown-it-disable-url-encode --dev。解决`[xxx](./img/xxx)`图片相对路径问题。
             md.use(require("markdown-it-disable-url-encode"), "./");
+            // https://github.com/vuejs/vuepress/issues/2377。解决`::: v-pre`手动包裹太麻烦的问题。
+            md.use(require("./render-inline-code.js"));
         }
     },
     plugins: [
-        // yarn add @vuepress/plugin-medium-zoom -D
+        // yarn add @vuepress/plugin-medium-zoom -D。解决图片放大问题。
         '@vuepress/plugin-medium-zoom',
-        // yarn add vuepress-plugin-fulltext-search -D
-        'fulltext-search'
+        // yarn add vuepress-plugin-fulltext-search -D。解决全文搜索问题。
+        'fulltext-search',
     ],
+    // yarn add vuepress-theme-liawn -D。引入自定义主题
     theme: 'vuepress-theme-liawn',
     themeConfig: {
-        sidebarDepth: 0, // 0表示让左侧侧边栏禁止提取文章里的标题
-        lastUpdated: true, // 文档更新时间：每个文件git最后提交的时间。关闭的话可以节约打包时间
-        displayAllHeaders: false, // 默认情况下，侧边栏只会显示由当前活动页面的标题（headers）组成的链接
-        activeHeaderLinks: false, // 当用户通过滚动查看页面的不同部分时，嵌套的标题链接和 URL 中的 Hash 值会实时更新
-        smoothScroll: true, // 启用滚动效果
-        sidebar, // 侧边栏
-        expandAllGroup: false,
+        // 0表示让左侧侧边栏禁止提取文章里的标题。因为我们用了vuepress-theme-liawn，右侧会有文章所有标题，那么左侧就不应该再提取了
+        sidebarDepth: 0,
+        // 文档更新时间：每个文件git最后提交的时间。其实关闭它可以节约打包时间
+        lastUpdated: true,
+        // 默认情况下，侧边栏只会显示由当前活动页面的标题（headers）组成的链接
+        displayAllHeaders: false,
+        // 滚动页面，侧边栏标题和 URL 中的 Hash 值会实时更新。vuepress-theme-liawn的左侧侧边栏要实现该功能，所以这里关闭自有的
+        activeHeaderLinks: false,
+        // vuepress-plugin-smooth-scroll有bug，这里关闭它然后在.vuepress/enhanceApp.js实现它
+        smoothScroll: false,
+         // 侧边栏，东西太多，单独放到了sidebar.js
+        sidebar,
         // 导航栏
         nav: [
             { text: 'Web', link: '/book-web/' },
             { text: '生活', link: '/book-sketches/' },
         ],
+        // vuepress-theme-liawn的配置项
         rightSidebar: {
-            mode: 'dom',
-            dept: 6,
-            scope: '.page .content__default',
-            navbarHeight: 57.6
+            // h1的padding-top + margin-top + a的margin-top。
+            // 当top小于等于targetTop时，当前header就更新到右侧侧边栏标题和 URL 中的 Hash 值
+            targetTop: 73.6 - 24 + 32 + 3.74,
+            // 用于解决vuepress-plugin-smooth-scroll问题，表示是否平滑滚动
+            smoothScroll: true
         }
     },
 }

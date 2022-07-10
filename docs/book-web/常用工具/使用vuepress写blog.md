@@ -101,38 +101,50 @@ module.exports = {
     ],
     markdown: {
         lineNumbers: true, // 代码块显示行号
-        toc: { includeLevel: [2, 3, 4, 5] },
+        toc: { includeLevel: [2, 3, 4, 5, 6] },
+         // this.$page.headers里的标题层级
+        extractHeaders: [ 'h1', 'h2', 'h3', 'h4', 'h5', 'h6' ],
         // markdown-it插件，解决相对路径中文图片问题
         extendMarkdown: md => {
-            // yarn add markdown-it-disable-url-encode --dev
+            // yarn add markdown-it-disable-url-encode --dev。解决`[xxx](./img/xxx)`图片相对路径问题。
             md.use(require("markdown-it-disable-url-encode"), "./");
+            // https://github.com/vuejs/vuepress/issues/2377。解决`::: v-pre`手动包裹太麻烦的问题。
+            md.use(require("./render-inline-code.js"));
         }
     },
     plugins: [
-        // yarn add @vuepress/plugin-medium-zoom -D
+        // yarn add @vuepress/plugin-medium-zoom -D。解决图片放大问题。
         '@vuepress/plugin-medium-zoom',
-        // yarn add vuepress-plugin-fulltext-search -D
-        'fulltext-search'
+        // yarn add vuepress-plugin-fulltext-search -D。解决全文搜索问题。
+        'fulltext-search',
     ],
+    // yarn add vuepress-theme-liawn -D。引入自定义主题
     theme: 'vuepress-theme-liawn',
     themeConfig: {
-        sidebarDepth: 0, // 0表示让左侧侧边栏禁止提取文章里的标题
-        lastUpdated: true, // 文档更新时间：每个文件git最后提交的时间。关闭的话可以节约打包时间
-        displayAllHeaders: false, // 默认情况下，侧边栏只会显示由当前活动页面的标题（headers）组成的链接
-        activeHeaderLinks: false, // 当用户通过滚动查看页面的不同部分时，嵌套的标题链接和 URL 中的 Hash 值会实时更新
-        smoothScroll: true, // 启用滚动效果
-        sidebar, // 侧边栏
-        expandAllGroup: false,
+        // 0表示让左侧侧边栏禁止提取文章里的标题。因为我们用了vuepress-theme-liawn，右侧会有文章所有标题，那么左侧就不应该再提取了
+        sidebarDepth: 0,
+        // 文档更新时间：每个文件git最后提交的时间。其实关闭它可以节约打包时间
+        lastUpdated: true,
+        // 默认情况下，侧边栏只会显示由当前活动页面的标题（headers）组成的链接
+        displayAllHeaders: false,
+        // 滚动页面，侧边栏标题和 URL 中的 Hash 值会实时更新。vuepress-theme-liawn的左侧侧边栏要实现该功能，所以这里关闭自有的
+        activeHeaderLinks: false,
+        // vuepress-plugin-smooth-scroll有bug，这里关闭它然后在.vuepress/enhanceApp.js实现它
+        smoothScroll: false,
+         // 侧边栏，东西太多，单独放到了sidebar.js
+        sidebar,
         // 导航栏
         nav: [
             { text: 'Web', link: '/book-web/' },
             { text: '生活', link: '/book-sketches/' },
         ],
+        // vuepress-theme-liawn的配置项
         rightSidebar: {
-            mode: 'dom',
-            dept: 6,
-            scope: '.page .content__default',
-            navbarHeight: 57.6
+            // h1的padding-top + margin-top + a的margin-top。
+            // 当top小于等于targetTop时，当前header就更新到右侧侧边栏标题和 URL 中的 Hash 值
+            targetTop: 73.6 - 24 + 32 + 3.74,
+            // 用于解决vuepress-plugin-smooth-scroll问题，表示是否平滑滚动
+            smoothScroll: true
         }
     },
 }
@@ -276,14 +288,88 @@ vuepress打包非常慢，可以看[feat($core): 改进 VuePress 制作时间](h
 
    - 具体参考[Vuepress 图片资源中文路径问题](https://segmentfault.com/a/1190000022275001/)
 
-2. markdown中的花括号和Vue的插值冲突问题
+2. markdown中的花括号和Vue的插值冲突问题，可以用`v-pre`解决
 
     ```js
     ::: v-pre
     `{{ xxx }}`
     :::
     ```
+    
+    用`::: v-pre`包裹其实很麻烦，md很多，那么手动在每个md里相关地方都得加上这个`::: v-pre`，所以需要一个插件来让所有md里所有与`<code>`相关的都用上`v-pre`，参考[内联代码应禁用插值 ](https://github.com/vuejs/vuepress/issues/2377)
+
+    ```js
+    // https://github.com/vuejs/vuepress/issues/2377
+    const { escapeHtml } = require('markdown-it/lib/common/utils');
+
+    function renderInlineCode(tokens, idx, options, env, renderer) {
+    var token = tokens[idx];
+
+    return  '<code v-pre' + renderer.renderAttrs(token) + '>' +
+        escapeHtml(tokens[idx].content) +
+        '</code>';
+    }
+
+    module.exports = function(md, config) {
+        md.renderer.rules.code_inline = renderInlineCode;
+    };
+    ```
 
 3. `window`、`document`不能使用的问题。
   - [浏览器的 API 访问限制](https://vuepress.vuejs.org/zh/guide/using-vue.html#%E6%B5%8F%E8%A7%88%E5%99%A8%E7%9A%84-api-%E8%AE%BF%E9%97%AE%E9%99%90%E5%88%B6)
   - `document`有其他解决访问，如`this.$root.$el`或`this.$parent.$el`
+
+4. `vuepress-plugin-smooth-scroll`有两个问题。1.页面重加载(F5)时，`vuepress-plugin-smooth-scroll`的scrollBehavior中的hash是encode后的，其实`node_modules\@vuepress\core\lib\client\app.js`中的scrollBehavior早已解决了这个问题。2.还是页面重加载(F5)时，但URL带了hash，如果页面上的内容没有完全加载完，那么很有可能获取不到hash对应的anchor正确位置。解决方案，新增`.vuepress/enhanceApp.js`。enhanceApp.js如下：
+
+   ```js
+   /* eslint-disable no-param-reassign */
+   function scrollBehavior({ Vue, router, siteData }) {
+     // 确保themeConfig.smoothScroll关闭了，也就是不使用vuepress-plugin-smooth-scroll
+     if (siteData.themeConfig.smoothScroll) return;
+     // 添加滚动平滑的样式，记得要配置themeConfig.smoothScrollPlus
+     document.documentElement.style.scrollBehavior = siteData.themeConfig.smoothScrollPlus ? "smooth" : '';
+     // 可以参考 node_modules\@vuepress\core\lib\client\app.js 的 createApp 中的 scrollBehavior
+     // 滚动行为，有两点需要注意，一个是页面所有内容加载完才那to.path进行滚动，另一个是to.path要解码
+     router.options.scrollBehavior = (to, from, savedPosition) => {
+       if (savedPosition) {
+         // 这个场景是点击浏览器“前进/后退”
+         return savedPosition;
+       }
+       if (to.hash) {
+         if (Vue.$vuepress.$get("disableScrollBehavior")) {
+           return false;
+         }
+         // https://github.com/vuejs/vuepress/pull/2639
+         const hash = decodeURIComponent(to.hash);
+         // 该场景是点击文章中某个anchor（或者切换到另一篇文章并且带hash）
+         if (document.querySelector(hash)) {
+           return { selector: hash };
+         }
+         // 这个场景是页面F5刷新（初次加载），里面的图片等还未加载完，必须它们加载完再滚动，否则滚动不到准确位置
+         return new Promise((resolve) => {
+           // https://github.com/vuejs/vuepress/issues/1499#issuecomment-849148930
+           // 如果换成Vue.nextTick(() => {})还是没效果
+           window.onload = () => {
+             resolve({ selector: hash });
+           };
+         });
+       }
+       // 这个场景是切换到另一篇文章，但不带hash（滚到顶部）
+       return { x: 0, y: 0 };
+     };
+   }
+   export default ({
+     Vue, // VuePress 正在使用的 Vue 构造函数
+     options, // 附加到根实例的一些选项
+     router, // 当前应用的路由实例
+     siteData, // 站点元数据
+   }) => {
+     // 关闭vuepress-plugin-smooth-scroll，并且
+     // 增强node_modules\@vuepress\core\lib\client\app.js 的 createApp 中的 scrollBehavior
+     scrollBehavior({ Vue, options, router, siteData });
+   };
+   ```
+
+    上面的解决方案其实还有一个问题，那就window.onload只能解决初次加载，而如果路由切换时新页面有大量图片，上面的方案就不行了，另一种解决方案就在`Page.vue`里对`$route.path`进行监听，只要它改变了就将`imgLoaded`置为`false`，当所有图片加载完就置为`true`；`router.options.scrollBehavior`里起一个定时器（或观察者），直到`imgLoaded`变为`true`就scroll到具体位置。具体代码看[enhanceApp.js](https://github.com/liawnliu/vuepress-theme-liawn/blob/master/enhanceApp.js)和[Page.vue](https://github.com/liawnliu/vuepress-theme-liawn/blob/master/components/Page.vue)
+
+5. 还有一种场景会让滚动失效。例如某个md文档中的链接是`[一、第一章](#一、第一章)`，点击它会跳转本篇文章的`一、第一章`，此时滚动还是正常的，而此时点击浏览器“后退按钮”想返回到上一次的hash时，会发现URL中hash确实变了，但实际页面并没有滚动到这个hash对应的标题也就是`[一、第一章](#一、第一章)`。其实右侧侧边栏就不会有这个问题，原因就是右侧侧边栏的所有链接地址都是完整的，那么前面这个问题**解决方案**：补充md文档中所有跳转路径，例如`[一、第一章](./2.盒模型.md#一、第一章)`，你F12查看这个新修改的元素，就会发现它与右侧侧边栏的实际href一样了，那么点击浏览器“前进/后退按钮”都能正常滚动了。

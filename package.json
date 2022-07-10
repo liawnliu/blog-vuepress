@@ -10,10 +10,16 @@
     "new-build": "bash docs/.vuepress/scripts/build.sh"
   },
   "devDependencies": {
+    "@vue/cli-plugin-eslint": "4.5.17",
+    "@vue/cli-service": "4.5.17",
     "@vuepress/plugin-medium-zoom": "^1.9.7",
+    "eslint": "6.7.2",
+    "eslint-plugin-import": "2.22.1",
+    "eslint-plugin-vue": "6.2.2",
     "markdown-it-disable-url-encode": "^1.0.1",
+    "prettier": "2.2.1",
     "vuepress": "^1.9.7",
     "vuepress-plugin-fulltext-search": "^2.2.1",
-    "vuepress-theme-liawn": "1.0.1"
+    "vuepress-theme-liawn": "1.0.2"
   }
 }

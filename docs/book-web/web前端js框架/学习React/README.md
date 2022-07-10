@@ -21,7 +21,7 @@ React是一款将数据渲染成HTML页面的JavaScript开源库。它使用**�
 
 1. 保证本地有[node.js](/book-web/常用工具/Npm的使用.md)还有[git](/book-web/常用工具/Git的使用.md)。
 2. 使用的编辑器是[vscode](/book-web/常用工具/VSCode的使用.md)，打包工具是[webpack](/book-web/常用工具/webpack的使用.md)。
-3. 使用的语言是js（还有jsx），当然也可以用[typescript](/book-web/html、css、js、ts/学习TypeScript/TypeScript简介.md)。
+3. 使用的语言是js（还有jsx），当然也可以用[typescript](/book-web/html、css、js、ts/学习TypeScript/README.md)。
 4. 脚手架工具是[create-react-app](https://github.com/facebook/create-react-app)。
     - 可以先卸载老旧的create-react-app，`npm uninstall create-react-app -g`；
     - 然后全局安装create-react-app，`npm install create-react-app -g`；
