@@ -15,9 +15,11 @@ module.exports = {
                 '/book-web/html、css、js、ts/学习JavaScript/5.函数表达式',
                 '/book-web/html、css、js、ts/学习JavaScript/6.Http、Ajax和跨域',
                 '/book-web/html、css、js、ts/学习JavaScript/7.异步编程',
+                '/book-web/html、css、js、ts/学习JavaScript/8.浏览器渲染',
                 '/book-web/html、css、js、ts/学习JavaScript/js零碎知识和案例'
             ],
-        }, {
+        },
+        {
             title: '学习CSS',
             collapsable: true,
             path: '/book-web/html、css、js、ts/学习CSS/',
@@ -83,6 +85,61 @@ module.exports = {
         }]
     }, 
     {
+        title: '常用工具',
+        collapsable: false,
+        children: [
+            '/book-web/常用工具/Npm的使用',
+            '/book-web/常用工具/Git的使用',
+            '/book-web/常用工具/webpack的使用',
+            '/book-web/常用工具/VSCode的使用',
+            '/book-web/常用工具/Chrome的使用',
+            '/book-web/常用工具/使用vuepress写blog',
+            '/book-web/常用工具/使用docsify写blog',
+            '/book-web/常用工具/使用gitbook写blog',
+            '/book-web/web前端测试与调试/基于mocha+chai的单元测试',
+        ]
+    },
+    {
+        title: 'Web后端',
+        collapsable: false,
+        initialOpenGroupIndex: -1, // 默认是0表示展开第一项，现设置为-1表示初始化时全部折叠
+        children: [{
+            title: '学习node.js',
+            collapsable: true,
+            path: '/book-web/web后端/学习node.js/',
+            children: [
+                '/book-web/web后端/学习node.js/1.globals和模块',
+                '/book-web/web后端/学习node.js/2.Buffer缓存区和path路径',
+                '/book-web/web后端/学习node.js/3.文件和目录操作',
+                '/book-web/web后端/学习node.js/4.http传输相关'
+            ]
+        }, {
+            title: '学习python',
+            collapsable: true,
+            path: '/book-web/web后端/学习python/',
+            children: [
+                '/book-web/web后端/学习python/1.python基础',
+                '/book-web/web后端/学习python/2.python进阶',
+                '/book-web/web后端/学习python/3.python建议',
+            ]
+        }]
+    },
+    {
+        title: '简单项目实践',
+        collapsable: false,
+        initialOpenGroupIndex: -1, // 默认是0表示展开第一项，现设置为-1表示初始化时全部折叠
+        children: [{
+            title: 'react+express+ts写爬虫',
+            collapsable: true,
+            path: '/book-web/项目/react+express+ts写爬虫/',
+            children: [
+                '/book-web/项目/react+express+ts写爬虫/1.用ts编写小爬虫',
+                '/book-web/项目/react+express+ts写爬虫/2.用express实现爬虫接口',
+                '/book-web/项目/react+express+ts写爬虫/3.用react展示爬虫数据'
+            ]
+        }]
+    },
+    {
         title: '数据结构与算法',
         collapsable: false,
         initialOpenGroupIndex: -1, // 默认是0表示展开第一项，现设置为-1表示初始化时全部折叠
@@ -108,36 +165,6 @@ module.exports = {
         }]
     },
     {
-        title: '常用工具',
-        collapsable: false,
-        children: [
-            '/book-web/常用工具/Npm的使用',
-            '/book-web/常用工具/Git的使用',
-            '/book-web/常用工具/webpack的使用',
-            '/book-web/常用工具/VSCode的使用',
-            '/book-web/常用工具/Chrome的使用',
-            '/book-web/常用工具/使用vuepress写blog',
-            '/book-web/常用工具/使用docsify写blog',
-            '/book-web/常用工具/使用gitbook写blog',
-            '/book-web/web前端测试与调试/基于mocha+chai的单元测试',
-        ]
-    },
-    {
-        title: '简单项目实践',
-        collapsable: false,
-        initialOpenGroupIndex: -1, // 默认是0表示展开第一项，现设置为-1表示初始化时全部折叠
-        children: [{
-            title: 'react+express+ts写爬虫',
-            collapsable: true,
-            path: '/book-web/项目/react+express+ts写爬虫/',
-            children: [
-                '/book-web/项目/react+express+ts写爬虫/1.用ts编写小爬虫',
-                '/book-web/项目/react+express+ts写爬虫/2.用express实现爬虫接口',
-                '/book-web/项目/react+express+ts写爬虫/3.用react展示爬虫数据'
-            ]
-        }]
-    },
-    {
         title: '面试准备',
         collapsable: false,
         children: [
@@ -160,5 +187,39 @@ module.exports = {
         children: [
             '/book-sketches/日常生活/土味情话' 
         ]
+    },
+    {
+        title: '影视剪辑',
+        collapsable: false,
+        initialOpenGroupIndex: -1, // 默认是0表示展开第一项，现设置为-1表示初始化时全部折叠
+        children: [{
+            title: '文案课',
+            collapsable: true,
+            path: '/book-sketches/影视剪辑/文案课/',
+            children: [
+                '/book-sketches/影视剪辑/文案课/1.提升认知',
+                '/book-sketches/影视剪辑/文案课/1.作品不热门？',
+                '/book-sketches/影视剪辑/文案课/2.写作没思路？',
+                '/book-sketches/影视剪辑/文案课/3.文案没节奏？',
+                '/book-sketches/影视剪辑/文案课/4.流量不稳定？',
+                '/book-sketches/影视剪辑/文案课/5.还是不会写？',
+                '/book-sketches/影视剪辑/文案课/6.运营不会搞？',
+                '/book-sketches/影视剪辑/文案课/7.选题不会选？',
+                '/book-sketches/影视剪辑/文案课/8.开头不会写？'
+            ],
+        }]
+    },
+    {
+        title: '电商运营',
+        collapsable: false,
+        initialOpenGroupIndex: -1, // 默认是0表示展开第一项，现设置为-1表示初始化时全部折叠
+        children: [{
+            title: '抖店无货源',
+            collapsable: true,
+            path: '/book-sketches/电商运营/抖店无货源/',
+            children: [
+                '/book-sketches/电商运营/抖店无货源/1.抖音精细化选品的8个方法',
+            ],
+        }]
     }]
 }
