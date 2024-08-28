@@ -1,3 +1,7 @@
+最新说明：
+
+[vitepress](https://vitepress.dev/zh/)已从v1.0.0-alpha.73升级到v1.3.4，强烈推荐vitepress而不是老的vuepress
+
 新说明：
 
 旧博客(本项目)已迁移至新博客[blog-liawn](https://github.com/liawnliu/blog-liawn)，新的[blog 入口](https://liawnliu.github.io/blog-liawn/)。
